@@ -24,9 +24,15 @@
             animation: pulse 2s infinite;
         }
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
         .loading-spinner {
             border-top-color: transparent;
@@ -38,6 +44,7 @@
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
+    <!-- Header -->
     <header class="gradient-bg text-white shadow-lg">
         <div class="container mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
@@ -45,76 +52,369 @@
                     <i class="fas fa-music text-3xl"></i>
                     <h1 class="text-2xl font-bold">MusicHub</h1>
                 </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="hover:underline">Início</a>
+                    <a href="#" class="hover:underline">Como funciona</a>
+                    <a href="#" class="hover:underline">FAQ</a>
+                    <a href="#" class="hover:underline">Contato</a>
+                </nav>
+                <button class="md:hidden text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 text-center">
-        <h2 class="text-4xl font-bold mb-4 text-gray-800">Baixe músicas de qualquer plataforma</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Converta links do Spotify, SoundCloud e YouTube para MP3 de alta qualidade em segundos.
-        </p>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4 text-gray-800">Baixe músicas de qualquer plataforma</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Converta links do Spotify, SoundCloud e YouTube para MP3 de alta qualidade em segundos.
+            </p>
+        </section>
 
-        <div class="flex justify-center gap-6 mb-8">
-            <button onclick="selectPlatform('spotify')" class="platform-btn bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
-                <i class="fab fa-spotify text-2xl"></i><span>Spotify</span>
-            </button>
-            <button onclick="selectPlatform('soundcloud')" class="platform-btn bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
-                <i class="fab fa-soundcloud text-2xl"></i><span>SoundCloud</span>
-            </button>
-            <button onclick="selectPlatform('youtube')" class="platform-btn bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
-                <i class="fab fa-youtube text-2xl"></i><span>YouTube</span>
-            </button>
-        </div>
+        <!-- Platform Selection -->
+        <section class="mb-12">
+            <div class="flex flex-wrap justify-center gap-6 mb-8">
+                <button onclick="selectPlatform('spotify')" class="platform-btn bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
+                    <i class="fab fa-spotify text-2xl"></i>
+                    <span>Spotify</span>
+                </button>
+                <button onclick="selectPlatform('soundcloud')" class="platform-btn bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
+                    <i class="fab fa-soundcloud text-2xl"></i>
+                    <span>SoundCloud</span>
+                </button>
+                <button onclick="selectPlatform('youtube')" class="platform-btn bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg flex items-center space-x-2">
+                    <i class="fab fa-youtube text-2xl"></i>
+                    <span>YouTube</span>
+                </button>
+            </div>
+        </section>
 
-        <div class="bg-white p-6 rounded-xl shadow-lg max-w-xl mx-auto">
-            <div class="flex items-center mb-4">
-                <div id="selected-platform-icon" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                    <i id="platform-icon" class="fas fa-question text-gray-500"></i>
+        <!-- URL Input Section -->
+        <section class="max-w-3xl mx-auto mb-12">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center mb-4">
+                    <div id="selected-platform-icon" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                        <i id="platform-icon" class="fas fa-question text-gray-500"></i>
+                    </div>
+                    <div>
+                        <h3 id="selected-platform-text" class="font-semibold text-gray-700">Selecione uma plataforma acima</h3>
+                        <p id="platform-instructions" class="text-sm text-gray-500">Escolha onde sua música está disponível</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 id="selected-platform-text" class="font-semibold text-gray-700">Selecione uma plataforma acima</h3>
-                    <p id="platform-instructions" class="text-sm text-gray-500">Escolha onde sua música está disponível</p>
+
+                <div class="mb-4">
+                    <label for="music-url" class="block text-sm font-medium text-gray-700 mb-1">Cole o link da música</label>
+                    <div class="flex">
+                        <input type="text" id="music-url" placeholder="https://..." class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
+                        <button onclick="downloadMusic()" class="download-btn text-white px-6 py-3 rounded-r-lg font-medium hover:opacity-90 transition">
+                            Baixar
+                        </button>
+                    </div>
+                </div>
+
+                <div id="quality-options" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Qualidade do áudio</label>
+                    <div class="flex space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="quality" value="128" checked class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                            <span class="ml-2 text-gray-700">128 kbps (Padrão)</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="quality" value="192" class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                            <span class="ml-2 text-gray-700">192 kbps (Boa)</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="quality" value="320" class="h-4 w-4 text-purple-600 focus:ring-purple-500">
+                            <span class="ml-2 text-gray-700">320 kbps (Alta)</span>
+                        </label>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="mb-4">
-                <label for="music-url" class="block text-sm font-medium text-gray-700 mb-1">Cole o link da música</label>
-                <div class="flex">
-                    <input type="text" id="music-url" placeholder="https://..." class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
-                    <button onclick="downloadMusic()" class="download-btn text-white px-6 py-3 rounded-r-lg font-medium hover:opacity-90 transition">
-                        Baixar
-                    </button>
+        <!-- Loading State (Hidden by default) -->
+        <section id="loading-section" class="max-w-3xl mx-auto mb-12 hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div class="w-16 h-16 border-4 border-purple-500 border-dotted rounded-full loading-spinner mx-auto mb-4"></div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Processando sua música...</h3>
+                <p class="text-gray-600">Estamos convertendo o áudio para o formato MP3. Isso pode levar alguns segundos.</p>
+                <div class="mt-6 bg-gray-200 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="progress-text" class="text-sm text-gray-500 mt-2">0% concluído</p>
+            </div>
+        </section>
+
+        <!-- Download Ready (Hidden by default) -->
+        <section id="download-ready" class="max-w-3xl mx-auto mb-12 hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-green-500 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Sua música está pronta!</h3>
+                <p class="text-gray-600 mb-6">A música foi convertida com sucesso. Clique no botão abaixo para baixar.</p>
+                
+                <div class="bg-gray-100 rounded-lg p-4 mb-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-music text-purple-500"></i>
+                        </div>
+                        <div class="text-left flex-1">
+                            <h4 id="song-title" class="font-medium text-gray-800">Nome da Música</h4>
+                            <p id="song-artist" class="text-sm text-gray-500">Artista</p>
+                        </div>
+                        <div class="text-right">
+                            <p id="song-duration" class="text-sm text-gray-500">3:45</p>
+                            <p id="song-quality" class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">320 kbps</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="download-btn text-white px-8 py-3 rounded-lg font-medium hover:opacity-90 transition pulse">
+                    <i class="fas fa-download mr-2"></i> Baixar MP3
+                </button>
+                
+                <div class="mt-6 text-sm text-gray-500">
+                    <p>O download começará automaticamente em <span id="countdown">5</span> segundos...</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="status" class="mt-6 text-gray-600 hidden">Processando...</div>
+        <!-- Features Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Por que escolher o MusicHub?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-bolt text-blue-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Conversão Rápida</h3>
+                    <p class="text-gray-600">Converta suas músicas favoritas em MP3 em questão de segundos, sem espera.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-headphones text-green-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Alta Qualidade</h3>
+                    <p class="text-gray-600">Baixe músicas com qualidade de até 320 kbps para a melhor experiência auditiva.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-purple-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">Seguro e Limpo</h3>
+                    <p class="text-gray-600">Sem vírus, sem malware, apenas conversão de música simples e segura.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="mb-16 bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Como funciona?</h2>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+                    <h3 class="font-semibold mb-2 text-gray-800">Escolha a plataforma</h3>
+                    <p class="text-gray-600 text-sm">Selecione entre Spotify, SoundCloud ou YouTube</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+                    <h3 class="font-semibold mb-2 text-gray-800">Cole o link</h3>
+                    <p class="text-gray-600 text-sm">Copie e cole o link da música que deseja baixar</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+                    <h3 class="font-semibold mb-2 text-gray-800">Escolha a qualidade</h3>
+                    <p class="text-gray-600 text-sm">Selecione a qualidade do áudio desejada</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+                    <h3 class="font-semibold mb-2 text-gray-800">Baixe e aproveite</h3>
+                    <p class="text-gray-600 text-sm">Baixe o MP3 e ouça offline quando quiser</p>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-music mr-2"></i> MusicHub
+                    </h3>
+                    <p class="text-gray-400">O melhor conversor de música online. Baixe suas músicas favoritas de qualquer plataforma.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Links Úteis</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Início</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Como funciona</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contato</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Plataformas</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Spotify</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">SoundCloud</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">YouTube</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Outras plataformas</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Termos de Serviço</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">DMCA</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Copyright</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>© 2023 MusicHub. Todos os direitos reservados.</p>
+                <p class="mt-2 text-sm">Este site não hospeda nenhum arquivo de áudio. Apenas converte links públicos disponíveis.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
+        let selectedPlatform = null;
+        const sampleSongs = [
+            { title: "Bohemian Rhapsody", artist: "Queen", duration: "5:55" },
+            { title: "Blinding Lights", artist: "The Weeknd", duration: "3:20" },
+            { title: "Shape of You", artist: "Ed Sheeran", duration: "3:53" },
+            { title: "Dance Monkey", artist: "Tones and I", duration: "3:29" },
+            { title: "Someone You Loved", artist: "Lewis Capaldi", duration: "3:02" }
+        ];
+
         function selectPlatform(platform) {
-            const iconMap = {
-                spotify: ['fab fa-spotify', 'Spotify', 'Insira o link de uma música ou playlist do Spotify'],
-                soundcloud: ['fab fa-soundcloud', 'SoundCloud', 'Cole o link de uma música ou mix do SoundCloud'],
-                youtube: ['fab fa-youtube', 'YouTube', 'Cole o link de um vídeo ou playlist do YouTube']
-            };
-            const [icon, name, instruction] = iconMap[platform] || ['fas fa-question', 'Selecione uma plataforma', 'Escolha onde sua música está disponível'];
-            document.getElementById('platform-icon').className = icon;
-            document.getElementById('selected-platform-text').textContent = name;
-            document.getElementById('platform-instructions').textContent = instruction;
+            selectedPlatform = platform;
+            
+            // Update UI
+            const platformIcon = document.getElementById('platform-icon');
+            const platformIconContainer = document.getElementById('selected-platform-icon');
+            const platformText = document.getElementById('selected-platform-text');
+            const instructions = document.getElementById('platform-instructions');
+            const qualityOptions = document.getElementById('quality-options');
+            
+            // Reset all
+            platformIconContainer.className = 'w-10 h-10 rounded-full flex items-center justify-center mr-3';
+            qualityOptions.classList.add('hidden');
+            
+            switch(platform) {
+                case 'spotify':
+                    platformIcon.className = 'fab fa-spotify text-green-500';
+                    platformIconContainer.classList.add('bg-green-100');
+                    platformText.textContent = 'Spotify';
+                    instructions.textContent = 'Cole o link de uma música, álbum ou playlist do Spotify';
+                    qualityOptions.classList.remove('hidden');
+                    break;
+                case 'soundcloud':
+                    platformIcon.className = 'fab fa-soundcloud text-orange-500';
+                    platformIconContainer.classList.add('bg-orange-100');
+                    platformText.textContent = 'SoundCloud';
+                    instructions.textContent = 'Cole o link de uma música ou playlist do SoundCloud';
+                    qualityOptions.classList.remove('hidden');
+                    break;
+                case 'youtube':
+                    platformIcon.className = 'fab fa-youtube text-red-500';
+                    platformIconContainer.classList.add('bg-red-100');
+                    platformText.textContent = 'YouTube';
+                    instructions.textContent = 'Cole o link de um vídeo ou playlist do YouTube';
+                    break;
+            }
         }
 
         function downloadMusic() {
-            const url = document.getElementById('music-url').value.trim();
-            if (!url) return alert('Por favor, insira uma URL válida.');
-            document.getElementById('status').classList.remove('hidden');
-            document.getElementById('status').textContent = 'Iniciando download de: ' + url;
-
-            // Aqui você faria uma requisição real (ex: fetch para backend)
-            setTimeout(() => {
-                document.getElementById('status').textContent = 'Download concluído!';
-            }, 3000);
+            const urlInput = document.getElementById('music-url');
+            const url = urlInput.value.trim();
+            
+            if (!selectedPlatform) {
+                alert('Por favor, selecione uma plataforma primeiro');
+                return;
+            }
+            
+            if (!url) {
+                alert('Por favor, cole o link da música que deseja baixar');
+                return;
+            }
+            
+            // Validate URL format
+            if (!isValidUrl(url, selectedPlatform)) {
+                alert(`Por favor, insira um link válido do ${selectedPlatform}`);
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('loading-section').classList.remove('hidden');
+            
+            // Simulate processing
+            let progress = 0;
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 5;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${progress}% concluído`;
+                
+                if (progress === 100) {
+                    clearInterval(interval);
+                    
+                    // Hide loading, show download ready
+                    document.getElementById('loading-section').classList.add('hidden');
+                    
+                    // Set random sample song data
+                    const randomSong = sampleSongs[Math.floor(Math.random() * sampleSongs.length)];
+                    document.getElementById('song-title').textContent = randomSong.title;
+                    document.getElementById('song-artist').textContent = randomSong.artist;
+                    document.getElementById('song-duration').textContent = randomSong.duration;
+                    
+                    // Set quality
+                    const quality = document.querySelector('input[name="quality"]:checked')?.value || '128';
+                    document.getElementById('song-quality').textContent = `${quality} kbps`;
+                    
+                    // Show download section
+                    document.getElementById('download-ready').classList.remove('hidden');
+                    
+                    // Start countdown
+                    let countdown = 5;
+                    const countdownElement = document.getElementById('countdown');
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        countdownElement.textContent = countdown;
+                        
+                        if (countdown <= 0) {
+                            clearInterval(countdownInterval);
+                            // In a real app, this would trigger the download
+                            alert('Download iniciado! (Simulação)');
+                        }
+                    }, 1000);
+                }
+            }, 300);
+        }
+        
+        function isValidUrl(url, platform) {
+            // Simple validation for demo purposes
+            // In a real app, you'd have more robust validation
+            if (platform === 'spotify') {
+                return url.includes('spotify.com');
+            } else if (platform === 'soundcloud') {
+                return url.includes('soundcloud.com');
+            } else if (platform === 'youtube') {
+                return url.includes('youtube.com') || url.includes('youtu.be');
+            }
+            return false;
         }
     </script>
 </body>
